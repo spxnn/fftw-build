@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# build arm lib of fftw3 for android
+# build fftw3 lib for android
 
 ANDROID_NDK=/opt/androidbuild/ndk/android-ndk-r9b
 INSTALL_DIR=android-install
@@ -13,10 +13,13 @@ export AR="arm-linux-androideabi-ar"
 export RANLIB="arm-linux-androideabi-ranlib"
 export STRIP="arm-linux-androideabi-strip"
 
+set -e
+
 mkdir -p $INSTALL_DIR
-./configure --host=arm-eabi --prefix=$INSTALL_DIR --enable-float --enable-neon
+rm -rf $INSTALL_DIR/*
 
-make
-make install
+./configure --host=arm-eabi --enable-float --enable-neon
+make -j4
+cp .libs/libfftw3f.a $INSTALL_DIR/libfftw3f.a
+make distclean
 
-exit 0

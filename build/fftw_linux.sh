@@ -1,35 +1,21 @@
 #!/bin/sh
 
-# build i386 / x86_64 lib of fftw3 for linux
+# build fftw3 lib for linux
 
 INSTALL_DIR=linux-install
+
+set -e
+
 mkdir -p $INSTALL_DIR
+rm -rf $INSTALL_DIR/*
 
-# ---------------------------------------------------
-#    i386
-# ---------------------------------------------------
-./configure --enable-float --enable-sse --enable-sse2 --enable-openmp --enable-avx
-if [ $? -ne 0 ]; then
-    echo "configure for i386 failed"
-    exit
-fi
+for arch in i386 x86_64; do
+    export CC="gcc -arch ${arch}"
 
-make -j2
+    ./configure --enable-float
+    make -j4
 
-cp .libs/libfftw3f.a $INSTALL_DIR/libfftw3f_i386.a
-make distclean
-
-# ---------------------------------------------------
-#    x86_64
-# ---------------------------------------------------
-./configure --enable-float --enable-sse --enable-sse2 --enable-openmp --enable-avx
-if [ $? -ne 0 ]; then
-    echo "configure for x86_64 failed"
-    exit
-fi
-
-make -j2
-
-cp .libs/libfftw3f.a $INSTALL_DIR/libfftw3f_x86_64.a
-make distclean
+    cp .libs/libfftw3f.a $INSTALL_DIR/libfftw3f_${arch}.a
+    make distclean
+done
 

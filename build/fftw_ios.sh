@@ -3,7 +3,7 @@
 # build fftw3 lib for ios
 
 XCODE_TOOLCHAINS=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
-SDKROOT_IOS=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk
+IOS_SYSROOT=`xcrun --sdk iphoneos --show-sdk-path`
 INSTALL_DIR=ios-install
 
 set -e
@@ -14,10 +14,9 @@ rm -rf $INSTALL_DIR/*
 
 for arch in armv7 armv7s arm64; do
     export CC="$XCODE_TOOLCHAINS/usr/bin/cc -arch ${arch} -std=gnu99 -mfpu=neon"
-    export CFLAGS="$CPPFLAGS -arch ${arch} -mfpu=neon -no-cpp-precomp -miphoneos-version-min=7.1 -isysroot $SDKROOT_IOS"
-    export CPPFLAGS="-I$SDKROOT_IOS/usr/include/ -mfpu=neon"
-    export LD=$XCODE_TOOLCHAINS/usr/bin/ld
-    
+    export CFLAGS="-O3 -arch ${arch} -mfpu=neon -miphoneos-version-min=8.0 -pipe -isysroot ${IOS_SYSROOT}"
+    export CPPFLAGS="-I$IOS_SYSROOT/usr/include"
+ 
     ./configure --host=arm-apple-darwin --enable-float --enable-neon
     make -j4
 

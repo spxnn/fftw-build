@@ -1,7 +1,7 @@
 # fftw-build
 FFTW build solutions and precompiled libraries for linux/android/ios/macos/windows.
 
-## Precompiled libraries
+## Precompiled libraries (all with enabled float, you have to rebuild yourself for double or long double)
 1. Get precompiled library for ***linux*** from [this git repository](https://github.com/godock/fftw-build/tree/master/library/linux).  
 2. Get precompiled library for ***android*** from [this git repository](https://github.com/godock/fftw-build/tree/master/library/android).  
 3. Get precompiled library for ***ios*** from [this git repository](https://github.com/godock/fftw-build/tree/master/library/ios).  
